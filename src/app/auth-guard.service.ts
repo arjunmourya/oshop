@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
       {
         token: accessToken,
         idToken: idToken,
-        uid: profile.getId(),
+        uid: profile.getId(), 
         name: profile.getName(),
         email: profile.getEmail(),
         image: profile.getImageUrl(),

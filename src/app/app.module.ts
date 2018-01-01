@@ -5,7 +5,6 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 //import { Angular2SocialLoginModule } from "angular2-social-login";
 import { Angular2SocialLoginModule } from "./services/angular2socialloginmodule.module";
 
-
 import { AppComponent } from './app.component';
 import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
 import { HomeComponent } from './home/home.component';
@@ -19,6 +18,7 @@ import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.componen
 import { LoginComponent } from './login/login.component';
 import { SharedService } from './shared-service.service';
 import { AuthGuard } from './auth-guard.service';
+
 
 
 let providers = {
@@ -48,8 +48,8 @@ let providers = {
     MyOrdersComponent,
     AdminProductsComponent,
     AdminOrdersComponent,
-    LoginComponent
-    
+    LoginComponent  
+
   ],
   imports: [
     BrowserModule,
@@ -69,7 +69,8 @@ let providers = {
       {path:'admin/orders',component:AdminOrdersComponent,canActivate:[AuthGuard]},
     ])
   ],
-  providers: [SharedService,AuthGuard],
+  providers: [SharedService,AuthGuard],     
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

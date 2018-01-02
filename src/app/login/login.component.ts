@@ -4,11 +4,7 @@ import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/cor
 import { AuthService } from "./../services/google-login.service";
 import { Router, ActivatedRoute } from '@angular/router';
 
-
-
-
-
-
+import { UserService } from './../user.service';
 import { SharedService } from '../shared-service.service';
 
 @Component({
@@ -21,8 +17,11 @@ export class LoginComponent implements OnDestroy {
 
   //@Output('username') username = new EventEmitter();
   public user;
+  userFromDb:any;
   sub: any;
-  constructor(public _auth: AuthService, private router: Router, private _sharedService: SharedService) { }
+  constructor(public _auth: AuthService, private router: Router, private _sharedService: SharedService,private userService:UserService) {
+    
+   }
 
   signIn(provider) {
     this.sub = this._auth.login(provider).subscribe(
@@ -30,13 +29,16 @@ export class LoginComponent implements OnDestroy {
         //console.log(data);
         this.user = data;
         //this.username.emit(this.user.email);
-        this._sharedService.emitChange(this.user.email);
-        //localStorage.setItem('username',this.user.email);
-
-        this.router.navigate(['/shopping-cart']);        
+        //this._sharedService.emitChange(this.user.email);
+        
+        //this.userService.saveUser(this.user).subscribe(userFromDb=>this.userFromDb=userFromDb,error=>console.log(error));
+        this.userService.saveUser(this.user).subscribe(userFromDb=>{this.userFromDb=userFromDb;this._sharedService.emitChange(userFromDb);},error=>console.log(error));
+        
+        this.router.navigate(['/']);
 
       }
     )
+            
   }
 
 

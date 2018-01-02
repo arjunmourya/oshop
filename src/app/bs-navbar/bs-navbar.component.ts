@@ -4,6 +4,7 @@ import { AuthService } from "./../services/google-login.service";
 
 import { Router } from '@angular/router';
 import { SharedService } from '../shared-service.service';
+import {IAppUser} from './../models/app-user';
 
 @Component({
   selector: 'bs-navbar',
@@ -15,7 +16,10 @@ export class BsNavbarComponent implements OnInit, OnChanges, OnDestroy {
 
  
 
+  user:IAppUser;
   username:string='[NAME]';
+  isAdmin:boolean=false;
+  
   sub: any;
   constructor(public _auth: AuthService,private router:Router,private _sharedService: SharedService) { 
     //this.username=localStorage.getItem('username');   
@@ -27,8 +31,9 @@ export class BsNavbarComponent implements OnInit, OnChanges, OnDestroy {
       text => {
 
           console.log(text);
-          this.username=text;
-
+          this.user=text;
+          this.username=this.user.email;
+          this.isAdmin=this.user.isAdmin;
       });
   }
 
@@ -37,7 +42,8 @@ export class BsNavbarComponent implements OnInit, OnChanges, OnDestroy {
     this.sub = this._auth.logout().subscribe(
       (data) => {
         console.log(data);
-        this.username='[NAME]'; 
+        this.username='[NAME]' ;
+        this.isAdmin=false;
 
         this.router.navigate(['/login']);
       }
@@ -49,7 +55,9 @@ export class BsNavbarComponent implements OnInit, OnChanges, OnDestroy {
     this._sharedService.changeEmitted$.subscribe(
       text => {
         console.log(text);
-        this.username = text;
+        this.user = text;
+        this.username=this.user.email;
+        this.isAdmin=this.user.isAdmin;
       });
   }
 

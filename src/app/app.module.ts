@@ -1,6 +1,7 @@
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpModule } from '@angular/http';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 //import { Angular2SocialLoginModule } from "angular2-social-login";
 import { Angular2SocialLoginModule } from "./services/angular2socialloginmodule.module";
@@ -18,6 +19,8 @@ import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.componen
 import { LoginComponent } from './login/login.component';
 import { SharedService } from './shared-service.service';
 import { AuthGuard } from './auth-guard.service';
+import {UserService} from './user.service';
+import { AdminAuthGuard } from './admin-auth-guard.service';
 
 
 
@@ -53,6 +56,7 @@ let providers = {
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     Angular2SocialLoginModule,
     NgbModule.forRoot(),
     RouterModule.forRoot([
@@ -65,11 +69,11 @@ let providers = {
       {path:'order-success',component:OrderSuccessfulComponent,canActivate:[AuthGuard]},
       {path:'my/orders',component:MyOrdersComponent,canActivate:[AuthGuard]},
       
-      {path:'admin/products',component:AdminProductsComponent,canActivate:[AuthGuard]},
-      {path:'admin/orders',component:AdminOrdersComponent,canActivate:[AuthGuard]},
+      {path:'admin/products',component:AdminProductsComponent,canActivate:[AuthGuard,AdminAuthGuard]},
+      {path:'admin/orders',component:AdminOrdersComponent,canActivate:[AuthGuard,AdminAuthGuard]},
     ])
   ],
-  providers: [SharedService,AuthGuard],     
+  providers: [SharedService,AuthGuard,UserService,AdminAuthGuard],     
 
   bootstrap: [AppComponent]
 })

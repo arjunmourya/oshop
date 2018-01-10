@@ -1,10 +1,14 @@
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 //import { Angular2SocialLoginModule } from "angular2-social-login";
 import { Angular2SocialLoginModule } from "./services/angular2socialloginmodule.module";
+import {CustomFormsModule} from 'ng2-validation';
+import { DataTableModule } from './data-table';
+
 
 import { AppComponent } from './app.component';
 import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
@@ -21,6 +25,11 @@ import { SharedService } from './shared-service.service';
 import { AuthGuard } from './auth-guard.service';
 import {UserService} from './user.service';
 import { AdminAuthGuard } from './admin-auth-guard.service';
+import { ProductFormComponent } from './admin/product-form/product-form.component';
+import { CategoryService } from './category.service';
+import { ProductService } from './product.service';
+import { ProductFilterPipe } from './common/product-filter.pipe';
+
 
 
 
@@ -51,12 +60,17 @@ let providers = {
     MyOrdersComponent,
     AdminProductsComponent,
     AdminOrdersComponent,
-    LoginComponent  
+    LoginComponent,
+    ProductFormComponent,
+    ProductFilterPipe  
 
   ],
   imports: [
     BrowserModule,
     HttpModule,
+    FormsModule,
+    CustomFormsModule,
+    DataTableModule,    
     Angular2SocialLoginModule,
     NgbModule.forRoot(),
     RouterModule.forRoot([
@@ -69,11 +83,22 @@ let providers = {
       {path:'order-success',component:OrderSuccessfulComponent,canActivate:[AuthGuard]},
       {path:'my/orders',component:MyOrdersComponent,canActivate:[AuthGuard]},
       
-      {path:'admin/products',component:AdminProductsComponent,canActivate:[AuthGuard,AdminAuthGuard]},
+      
+      { 
+        path: 'admin/products/new', 
+        component: ProductFormComponent, 
+        canActivate: [AuthGuard, AdminAuthGuard] 
+      },
+      { 
+        path: 'admin/products/:id', 
+        component: ProductFormComponent, 
+        canActivate: [AuthGuard, AdminAuthGuard] 
+      },
+      {path:'admin/products',component:AdminProductsComponent,canActivate:[AuthGuard,AdminAuthGuard]},            
       {path:'admin/orders',component:AdminOrdersComponent,canActivate:[AuthGuard,AdminAuthGuard]},
     ])
   ],
-  providers: [SharedService,AuthGuard,UserService,AdminAuthGuard],     
+  providers: [SharedService,AuthGuard,UserService,AdminAuthGuard,CategoryService,ProductService],     
 
   bootstrap: [AppComponent]
 })

@@ -29,12 +29,14 @@ export class AuthService {
                 switch(provider){
                     case "google":
                                     if (typeof(this.gauth) == "undefined"){
-                                        this.gauth = gapi.auth2.getAuthInstance();
+                                        this.gauth = gapi.auth2.getAuthInstance();                                        
                                     }
                                     if(!this.gauth.isSignedIn.get()){
                                         this.gauth.signIn().then(() => {
+                                            let data=this._fetchGoogleUserDetails();
                                             localStorage.setItem('_login_provider', 'google');
-                                            observer.next(this._fetchGoogleUserDetails());
+                                            localStorage.setItem('userid', data.uid);
+                                            observer.next(data);
                                             observer.complete();
                                         });
                                     }else{
@@ -122,6 +124,7 @@ export class AuthService {
                                 gSignout.type = "text/html";
                                 gSignout.id = "gSignout";
                                 localStorage.removeItem('_login_provider');
+                                localStorage.removeItem('userid');
                                 gapi.auth2.getAuthInstance().signOut();
                                 gapi.auth2.getAuthInstance().disconnect();
                                 observer.next(true);

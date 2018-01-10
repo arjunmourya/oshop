@@ -29,6 +29,13 @@ export class UserService {
         .catch(this.handleError);
     }
 
+    isAdminUser(id):Observable<boolean>{
+        return this._http.get(this.baseUrl+'GetValue/'+id)
+        .map((response:Response)=><boolean> (response.json() && response.json().isAdmin))
+        //.do(data=>console.log('All '+JSON.stringify(data)))
+        .catch(this.handleError);
+    }
+
     saveUser(user){
       let postData={userid:user.uid,name:user.name,email:user.email,passwordSalt:'',passwordHash:'',isAdmin:true};
       let body = JSON.stringify(postData);

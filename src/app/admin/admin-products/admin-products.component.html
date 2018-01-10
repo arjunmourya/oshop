@@ -1,3 +1,61 @@
 <p>
-  admin-products works!
-</p>
+    <a routerLink="/admin/products/new" class="btn btn-primary">New Product</a>    
+</p>&nbsp;&nbsp;&nbsp;&nbsp;
+<!--<div class="row">
+    <div class="col-md-4">
+        <input type="text" class="form-control" (keyup)="filter(query.value)"
+           #query="ngModel" 
+           [(ngModel)]='listFilter' placeholder="Search..."
+           >
+    </div>
+</div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<data-table
+        [items]="items"
+        [itemCount]="itemCount"
+        (reload)="reloadItems($event)"
+>
+    <data-table-column
+        [property]="'title'"
+        [header]="'Title'"
+        [sortable]="true">
+    </data-table-column>
+    <data-table-column
+        [property]="'price'"
+        [header]="'Price'"
+        [sortable]="true">
+        <ng-template #dataTableCell let-item="item">
+            {{item.price | currency: 'USD':true}}
+        </ng-template>
+    </data-table-column>    
+    <data-table-column
+        [property]="'productid'">
+        <ng-template #dataTableCell let-item="item">
+            <a [routerLink]="['/admin/products/',item.productid]">Edit</a>
+        </ng-template>
+    </data-table-column>    
+</data-table>-->
+
+
+
+
+<!--<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of products | productFilter:listFilter">
+                <td>{{product.title}}</td>
+                <td>{{product.price}}</td>
+                <td>                    
+                    <a [routerLink]="['/admin/products/',product.productid]">Edit</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>-->

@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class SharedService {
     // Observable string sources
@@ -11,4 +12,6 @@ export class SharedService {
     emitChange(change: any) {
         this.emitChangeSource.next(change);
     }
+
+    public loggedUser: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 }

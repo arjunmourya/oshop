@@ -32,7 +32,9 @@ export class LoginComponent implements OnDestroy {
         //this._sharedService.emitChange(this.user.email);
         
         //this.userService.saveUser(this.user).subscribe(userFromDb=>this.userFromDb=userFromDb,error=>console.log(error));
-        this.userService.saveUser(this.user).subscribe(userFromDb=>{this.userFromDb=userFromDb;this._sharedService.emitChange(userFromDb);},error=>console.log(error));
+        this.userService.saveUser(this.user).subscribe(userFromDb=>{this.userFromDb=userFromDb;this._sharedService.emitChange(userFromDb);
+          //this._sharedService.loggedUser.next(userFromDb.userid);
+        },error=>console.log(error));
         
         this.router.navigate(['/']);
 

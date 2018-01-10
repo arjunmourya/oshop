@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './../user.service';
 
+
 @Component({
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
@@ -43,6 +44,17 @@ export class ShoppingCartComponent implements OnInit {
    }
 
   ngOnInit() {
+  }
+
+  display(){
+    let toastr=require('toastr');
+    toastr.options.positionClass = 'toast-top-full-width';
+    toastr.options.extendedTimeOut = 0; //1000;
+    toastr.options.timeOut = 1000;
+    toastr.options.fadeOut = 250;
+    toastr.options.fadeIn = 250;
+    toastr.success('save');
+    //toastr.error('error');
   }
 
 }

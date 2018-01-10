@@ -4,7 +4,7 @@ import { AuthService } from "./../services/google-login.service";
 
 import { Router } from '@angular/router';
 import { SharedService } from '../shared-service.service';
-import {IAppUser} from './../models/app-user';
+import { IAppUser } from './../models/app-user';
 
 @Component({
   selector: 'bs-navbar',
@@ -12,16 +12,16 @@ import {IAppUser} from './../models/app-user';
   styleUrls: ['./bs-navbar.component.css']
 })
 
-export class BsNavbarComponent implements OnInit, OnChanges, OnDestroy {
+export class BsNavbarComponent implements OnInit {
 
- 
 
-  user:IAppUser;
-  username:string='[NAME]';
-  isAdmin:boolean=false;
-  
+
+  user: IAppUser;
+  username: string = '[NAME]';
+  isAdmin: boolean = false;
+
   sub: any;
-  constructor(public _auth: AuthService,private router:Router,private _sharedService: SharedService) { 
+  constructor(public _auth: AuthService, private router: Router, private _sharedService: SharedService) {
     //this.username=localStorage.getItem('username');   
 
   }
@@ -30,10 +30,14 @@ export class BsNavbarComponent implements OnInit, OnChanges, OnDestroy {
     this._sharedService.changeEmitted$.subscribe(
       text => {
 
-          console.log(text);
-          this.user=text;
-          this.username=this.user.email;
-          this.isAdmin=this.user.isAdmin;
+        //console.log(text);
+        this.user = text;
+        if (this.user && this.user.email !== ' ')
+          this.username = this.user.email;
+        else
+          this.username = '[NAME]';
+
+        this.isAdmin = this.user.isAdmin;
       });
   }
 
@@ -41,9 +45,9 @@ export class BsNavbarComponent implements OnInit, OnChanges, OnDestroy {
 
     this.sub = this._auth.logout().subscribe(
       (data) => {
-        console.log(data);
-        this.username='[NAME]' ;
-        this.isAdmin=false;
+        //console.log(data);
+        this.username = '[NAME]';
+        this.isAdmin = false;
 
         this.router.navigate(['/login']);
       }
@@ -51,19 +55,9 @@ export class BsNavbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
 
-  ngOnChanges() {
-    this._sharedService.changeEmitted$.subscribe(
-      text => {
-        console.log(text);
-        this.user = text;
-        this.username=this.user.email;
-        this.isAdmin=this.user.isAdmin;
-      });
-  }
 
-  ngOnDestroy() {
-    this.sub = null;
-  }
+
+
 
   // fetchUserDetails () {
   //   var currentUser = this._auth.gauth.currentUser.get();

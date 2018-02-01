@@ -29,13 +29,18 @@ import { ProductFormComponent } from './admin/product-form/product-form.componen
 import { CategoryService } from './category.service';
 import { ProductService } from './product.service';
 import { ProductFilterPipe } from './common/product-filter.pipe';
+import { ProductMenuComponent } from './products/product-menu/product-menu.component';
+import { ProductCardComponent } from './product-card/product-card.component';
+import {ShoppingCartService} from './shopping-cart.service';
+import { ProductQuantityComponent } from './product-quantity/product-quantity.component';
 
 
 
 
 let providers = {
   "google": {
-    "clientId": "<your_clientId_on_google>..apps.googleusercontent.com"    
+    //"clientId": "<your_clientId_on_google>..apps.googleusercontent.com"
+    "clientId": "783541848322-fejsuieen9b8n5c9otcdlo7anllbk32o.apps.googleusercontent.com"
   }
   // ,
   // "linkedin": {
@@ -62,7 +67,10 @@ let providers = {
     AdminOrdersComponent,
     LoginComponent,
     ProductFormComponent,
-    ProductFilterPipe  
+    ProductFilterPipe,
+    ProductMenuComponent,
+    ProductCardComponent,
+    ProductQuantityComponent  
 
   ],
   imports: [
@@ -74,7 +82,7 @@ let providers = {
     Angular2SocialLoginModule,
     NgbModule.forRoot(),
     RouterModule.forRoot([
-      {path:'',component:HomeComponent},
+      {path:'',component:ProductsComponent},
       {path:'products',component:ProductsComponent},
       {path:'shopping-cart',component:ShoppingCartComponent},
       {path:'login',component:LoginComponent},
@@ -98,7 +106,7 @@ let providers = {
       {path:'admin/orders',component:AdminOrdersComponent,canActivate:[AuthGuard,AdminAuthGuard]},
     ])
   ],
-  providers: [SharedService,AuthGuard,UserService,AdminAuthGuard,CategoryService,ProductService],     
+  providers: [SharedService,AuthGuard,UserService,AdminAuthGuard,CategoryService,ProductService,ShoppingCartService],     
 
   bootstrap: [AppComponent]
 })

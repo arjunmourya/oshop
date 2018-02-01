@@ -8,9 +8,15 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" routerLink="/shopping-cart">Shopping Cart
-        </a>
+          <a class="nav-link" routerLink="/shopping-cart">
+            Shopping Cart
+            <span class="badge badge-warning badge-pill">{{scItemCount}}</span>
+          </a>
         </li>
+        <!--<li class="nav-item active">
+          <a class="nav-link" routerLink="/products">Products
+        </a>
+        </li>-->
         <!--<li class="nav-item active">
 
           <a class="nav-link" routerLink="/check-out">Check out
@@ -25,8 +31,8 @@
           <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
             <a class="dropdown-item" routerLink="/my/orders">My Orders</a>
             <!--<ng-container *ngIf="isAdmin">-->
-              <a class="dropdown-item" routerLink="/admin/products" *ngIf="isAdmin" >Manage Products</a>
-              <a class="dropdown-item" routerLink="/admin/orders" *ngIf="isAdmin">Manage Orders</a>
+            <a class="dropdown-item" routerLink="/admin/products" *ngIf="isAdmin">Manage Products</a>
+            <a class="dropdown-item" routerLink="/admin/orders" *ngIf="isAdmin">Manage Orders</a>
             <!--</ng-container>-->
             <a class="dropdown-item" (click)="logout()">Logout</a>
           </div>

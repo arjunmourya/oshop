@@ -1,4 +1,30 @@
-<p>
-  shopping-cart works!  
-</p>
-<button class="btnbtn-primary" (click)="display()"> Click</button>
+<h1>Shopping Cart</h1>
+<ng-container *ngIf="cart$ | async as cart">
+  <p>
+    You have {{cart.totalItemCount}} items in your shopping cart.
+  </p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of cart.products">
+        <td>{{product.title}}</td>
+        <td><product-quantity [product]="product" [shopping-cart]="cart"></product-quantity></td>
+        <td>{{getPrice(product.price,getQuantity(cart.items,product.productid)) | currency:'USD':true:'1.2-2' }}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th></th>
+        <th></th>
+        <th>yet to be done</th>
+      </tr>
+    </tfoot>
+  </table>
+</ng-container>
+<!--<button class="btnbtn-primary" (click)="display()"> Click</button>-->

@@ -13,7 +13,7 @@ export class CategoryService {
   private categoryUrl='GetCategory';
   constructor(private _http:Http) { }
 
-  getCategory(){
+  getAll(){
     return this._http.get(this.baseUrl+this.categoryUrl).map((data:Response)=>data.json()).catch(error=>Observable.throw(error.json().error));
   }
 

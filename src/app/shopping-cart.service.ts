@@ -9,6 +9,7 @@ import 'rxjs/add/operator/take';
 import { IProduct } from './models/product';
 import { Item } from './models/items';
 import { ShoppingCartItem } from './models/shopping-cart-items';
+import {EmptyObservable} from 'rxjs/observable/EmptyObservable';
 
 @Injectable()
 export class ShoppingCartService {
@@ -20,18 +21,11 @@ export class ShoppingCartService {
   private getAllItemsUrl='GetItems';
   private updateItemUrl='UpdateItem/';
   private getShoppingCart='GetShoppingCartId';
+  private clearCartUrl='ClearCart';
   updatedItems:any[];
   constructor(private _http:Http) { }
 
-  private create(){
-    let body = {};
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-    return this._http.post(this.baseUrl + this.scSaveUrl, body, options)
-      .map((res: Response) => res.json())
-      .catch(this.handleError);;
-  }
-
+  
   async getCart(){
     let cartId=await this.getOrCreateCartId();
     return this._http.get(this.baseUrl+this.getShoppingCart+'/'+cartId).toPromise()
@@ -39,17 +33,7 @@ export class ShoppingCartService {
     .catch(this.handleError);
   }
 
-  private async getOrCreateCartId(): Promise<string> { 
-    let cartId = localStorage.getItem('cartId');
-    if (cartId) return cartId; 
-
-    let result = await this.create().toPromise();
-    localStorage.setItem('cartId', result.cartId);
-    return result.cartId;
-  }
-  
-
-  public getItem(cartId:string,productid:number){
+  public getItem(cartId:string,productid:number):Observable<Item>{
     return this._http.get(this.baseUrl+this.getItems+'/'+cartId+'/'+productid)
     .map((response:Response)=> response.json())
     .catch(this.handleError);
@@ -59,12 +43,14 @@ export class ShoppingCartService {
     //console.log(cartId);
     return this._http.get(this.baseUrl+this.getAllItemsUrl+'/'+cartId)
     .map((response:Response)=> {
-      let products=response.json().products;      
-      let items=response.json().items;
+      let products:IProduct[]=response.json().products || [];      
+      //let items:Item[]=response.json().items;
+      let items:Item[]=[];
+      items=response.json();
       return new ShoppingCartItem(items,products);
     })
     .catch(this.handleError);
-  }
+  } 
 
 
   async addToCart(product:IProduct){
@@ -75,6 +61,29 @@ export class ShoppingCartService {
     return this.updateItemQuantity(product,-1) ;
   }
 
+  async clearCart(){
+    let cartId=await this.getOrCreateCartId();
+    return this.addUpdateItem({cartId:cartId }, this.baseUrl + this.clearCartUrl+'/'+cartId, RequestMethod.Post);
+  }
+
+  private create(){
+    let body = {};
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(this.baseUrl + this.scSaveUrl, body, options)
+      .map((res: Response) => res.json())
+      .catch(this.handleError);;
+  }  
+
+  private async getOrCreateCartId(): Promise<string> { 
+    let cartId = localStorage.getItem('cartId');
+    if (cartId) return cartId; 
+
+    let result = await this.create().toPromise();
+    localStorage.setItem('cartId', result.cartId);
+    return result.cartId;
+  } 
+  
   private async updateItemQuantity(product:IProduct,change:number){
     let cartId = await this.getOrCreateCartId();    
     let added:number;
@@ -111,9 +120,9 @@ export class ShoppingCartService {
     let item$ = this.getItem(cartId, productid);
     let finalResult:number;
 
-     return item$.switchMap(data=>{
+     return item$.switchMap(data=>{       
         if (data == null || data == undefined) {
-        return this.addUpdateItem({ productid: productid, cartId: cartId, quantity:  1 }, this.baseUrl + this.addItemsToCart, RequestMethod.Post);
+        return this.addUpdateItem({ productid: productid, cartId: cartId, quantity:  change }, this.baseUrl + this.addItemsToCart, RequestMethod.Post);
       }
       else {
         return  this.addUpdateItem({ productid: productid, cartId: cartId, quantity: data.quantity + change }, this.baseUrl + this.updateItemUrl + cartId, RequestMethod.Put);

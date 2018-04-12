@@ -3,7 +3,7 @@ import { IProduct } from './product';
 
 export class ShoppingCartItem{
     
-    constructor(public items:Item[],public products:IProduct[]){
+    constructor(public items:Item[]=[],public products:IProduct[]){
 
     }
     
@@ -23,6 +23,14 @@ export class ShoppingCartItem{
 
         // }
         return quantity;
+    }
+
+    get TotalPrice(){
+        let sum=0;
+        for (let entry of this.items) {
+            sum+=entry.product.price * entry.quantity;
+        }
+        return sum;
     }
 
 

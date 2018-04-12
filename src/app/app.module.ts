@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 //import { Angular2SocialLoginModule } from "angular2-social-login";
 import { Angular2SocialLoginModule } from "./services/angular2socialloginmodule.module";
-import {CustomFormsModule} from 'ng2-validation';
+//import {CustomFormsModule} from 'ng2-validation';
 import { DataTableModule } from './data-table';
 
 
@@ -77,7 +77,7 @@ let providers = {
     BrowserModule,
     HttpModule,
     FormsModule,
-    CustomFormsModule,
+    //CustomFormsModule,
     DataTableModule,    
     Angular2SocialLoginModule,
     NgbModule.forRoot(),

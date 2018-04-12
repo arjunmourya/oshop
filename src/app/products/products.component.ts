@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
-export class ProductsComponent implements OnInit,OnDestroy {
+export class ProductsComponent implements OnInit {
 
   products: IProduct[] = [];
   filteredProducts: IProduct[] = [];  
@@ -22,17 +22,7 @@ export class ProductsComponent implements OnInit,OnDestroy {
   sub:Subscription;
   constructor(private route: ActivatedRoute, private productSvc: ProductService,private cartSvc:ShoppingCartService) {
 
-    this.productSvc.getAll()
-      .switchMap(products => {
-        this.products = products;
-        return route.queryParamMap;
-      }).subscribe(params => {
-        this.category = params.get('category');
-
-        this.filteredProducts = (this.category) ?
-          this.products.filter(p => p.category === this.category) : this.products;
-
-      });
+    
 
     
   }
@@ -45,6 +35,22 @@ export class ProductsComponent implements OnInit,OnDestroy {
         
       });
     });
+
+    this.productSvc.getAll()
+      .switchMap(products => {
+        this.products = products;
+        return this.route.queryParamMap;
+      }).subscribe(params => {
+        this.category = params.get('category');
+
+        this.applyFilter();
+
+      });
+  }
+
+  private applyFilter(){
+    this.filteredProducts = (this.category) ?
+          this.products.filter(p => p.category === this.category) : this.products;
   }
 
   // async ngAfterViewChecked(){
@@ -56,8 +62,6 @@ export class ProductsComponent implements OnInit,OnDestroy {
   //   });
   // }
 
-  ngOnDestroy(){
-    
-  }
+  
 
 }
